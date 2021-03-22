@@ -14,23 +14,35 @@ class NewsScreen extends StatefulWidget {
 
 class _NewsScreenState extends State<NewsScreen> {
   bool _loading = true;
+
+  //bool for pagination
   bool _moreNews;
+
+  //page to fetch news according to pages
   int page = 1;
 
+  //initializing objects
   News newsArticles = News();
   NewsSource newsSource = NewsSource();
   FilterNews filterNews = FilterNews();
 
+  //Lists to store news articles and sources
   List<NewsArticle> _newsArticles = List<NewsArticle>();
   List<Sources> _newsSource = List<Sources>();
 
+  //scroll controller for pagination
   ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
+    //function to fetch news
     getNews();
+
+    //function to fetch sources
     getSources();
     super.initState();
+    //scroll listener
+
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -40,10 +52,12 @@ class _NewsScreenState extends State<NewsScreen> {
     });
   }
 
+  //function for source fetching
   getSources() async {
     _newsSource = await newsSource.getNewsSource();
   }
 
+  //function to fetch news
   getNews() async {
     _moreNews = await newsArticles.getNews(page);
     _newsArticles = newsArticles.newsArticleList;
@@ -52,6 +66,7 @@ class _NewsScreenState extends State<NewsScreen> {
     });
   }
 
+  //function to fetch news according to filter of sources which by default are sorted according to RECENT FIRST
   getFilterNews(String sourceId) async {
     _moreNews = await filterNews.getSourceNews(page, sourceId);
     _newsArticles = filterNews.sourcehNewsArticleList;
@@ -78,26 +93,31 @@ class _NewsScreenState extends State<NewsScreen> {
                 onPressed: () {
                   print('search');
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SearchNewsView(),
-                          fullscreenDialog: true));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchNewsView(),
+                        fullscreenDialog: true),
+                  );
                 }),
             IconButton(
               icon: Icon(Icons.filter_list),
               onPressed: () {
                 showModalBottomSheet(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(16),
-                          topLeft: Radius.circular(16))),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(16),
+                      topLeft: Radius.circular(16),
+                    ),
+                  ),
                   context: context,
                   builder: (context) {
                     return Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(16),
-                              topLeft: Radius.circular(16))),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(16),
+                          topLeft: Radius.circular(16),
+                        ),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
@@ -119,10 +139,10 @@ class _NewsScreenState extends State<NewsScreen> {
                                 child: FlatButton(
                                   onPressed: () {
                                     Navigator.pop(context);
+                                    //Reseting values and lists to store news
                                     _loading = true;
                                     page = 1;
                                     _newsArticles.clear();
-                                    print(_newsArticles.length);
                                     getNews();
                                   },
                                   child: Text(
@@ -146,10 +166,10 @@ class _NewsScreenState extends State<NewsScreen> {
                                 title: Text(_newsSource[index].sourceName),
                                 onTap: () {
                                   Navigator.pop(context);
+                                  //Reseting values and lists to store new news according to filter
                                   _loading = true;
                                   page = 1;
                                   _newsArticles.clear();
-                                  print(_newsArticles.length);
                                   getFilterNews(_newsSource[index].id);
                                 },
                               );
@@ -174,6 +194,7 @@ class _NewsScreenState extends State<NewsScreen> {
                 controller: _scrollController,
                 itemCount: _newsArticles.length + 1,
                 itemBuilder: (context, index) {
+                  //Pagination- to fetch more news
                   if (index == _newsArticles.length) {
                     return _moreNews
                         ? Center(
@@ -189,6 +210,7 @@ class _NewsScreenState extends State<NewsScreen> {
                             ),
                           );
                   } else {
+                    //widget to represent news card
                     return NewsCard(
                       newsHeading: _newsArticles[index].title != null
                           ? _newsArticles[index].title

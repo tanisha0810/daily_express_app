@@ -1,3 +1,5 @@
+//model class for storing news articles
+
 class NewsArticle {
   String author;
   String title;

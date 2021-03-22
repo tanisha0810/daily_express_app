@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NewsView extends StatelessWidget {
+  //UI screen for news view
+
   final String newsAuthor;
   final String newsHeading;
   final String newsDate;
@@ -58,10 +60,14 @@ class NewsView extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                 ),
                 SizedBox(height: 16),
-                Text('Written By: $newsAuthor'),
                 Text(
-                    DateFormat('MMMM d, yyyy').format(DateTime.parse(newsDate)),
-                    style: TextStyle(fontSize: 12, color: Colors.black54)),
+                  'Written By: $newsAuthor',
+                  style: TextStyle(fontSize: 12, color: Colors.black54),
+                ),
+                Text(
+                  DateFormat('MMMM d, yyyy').format(DateTime.parse(newsDate)),
+                  style: TextStyle(fontSize: 12, color: Colors.black54),
+                ),
                 SizedBox(height: 12),
                 Text(
                   newsContent,
@@ -70,21 +76,21 @@ class NewsView extends StatelessWidget {
                 SizedBox(height: 12),
                 Row(
                   children: [
-                    Text(
-                      'To read complete article',
-                      style: TextStyle(fontSize: 16),
-                    ),
+                    Text('To read complete article'),
                     FlatButton(
                       padding: EdgeInsets.zero,
                       onPressed: () {
+                        //on press will launch News in browser
                         launchUrl(newsUrl);
                       },
-                      child: Text('CLICK HERE',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.blue[900],
-                            fontWeight: FontWeight.bold,
-                          )),
+                      child: Text(
+                        'CLICK HERE',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Colors.blue[900],
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -97,6 +103,6 @@ class NewsView extends StatelessWidget {
   }
 
   void launchUrl(String url) async {
-    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+    await canLaunch(url) ? await launch(url) : throw 'Cannot launch $url';
   }
 }

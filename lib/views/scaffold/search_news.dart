@@ -10,28 +10,40 @@ class SearchNewsView extends StatefulWidget {
 }
 
 class _SearchNewsViewState extends State<SearchNewsView> {
+  //page index for pagination
   int page = 1;
+
   bool _loading = true;
+
+  //bool to check if more news can be fetched
   bool _moreSearchNews;
+
+  //search query
   String _searchQuery;
+
   SearchNews searchNews = SearchNews();
+
   List<NewsArticle> _searchNewsArticles = List<NewsArticle>();
+
   ScrollController _scrollController = ScrollController();
+
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+    //scroll listener
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         print('scroll');
         page = page + 1;
-        getMoreNews();
+        getNews();
       }
     });
   }
 
+  //validate textformfiled and call funtion to fetch news according to query
   processSearchQuery() {
     if (_key.currentState.validate()) {
       _key.currentState.save();
@@ -42,6 +54,7 @@ class _SearchNewsViewState extends State<SearchNewsView> {
     }
   }
 
+  //fetch news according to query
   getNews() async {
     _moreSearchNews = await searchNews.getSearchNews(_searchQuery, page);
     _searchNewsArticles = searchNews.searchNewsArticleList;
@@ -50,14 +63,7 @@ class _SearchNewsViewState extends State<SearchNewsView> {
     });
   }
 
-  getMoreNews() async {
-    _moreSearchNews = await searchNews.getSearchNews(_searchQuery, page);
-    _searchNewsArticles = searchNews.searchNewsArticleList;
-    setState(() {
-      _loading = false;
-    });
-  }
-
+  //UI for search screen
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -153,29 +159,23 @@ class _SearchNewsViewState extends State<SearchNewsView> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => NewsView(
-                                              newsAuthor:
-                                                  _searchNewsArticles[index]
-                                                      .author,
-                                              newsContent:
-                                                  _searchNewsArticles[index]
-                                                      .content,
-                                              newsDate:
-                                                  _searchNewsArticles[index]
-                                                      .publishedAt,
-                                              newsDescription:
-                                                  _searchNewsArticles[index]
-                                                      .description,
-                                              newsHeading:
-                                                  _searchNewsArticles[index]
-                                                      .title,
-                                              newsImageUrl:
-                                                  _searchNewsArticles[index]
-                                                      .urlToImage,
-                                              newsUrl:
-                                                  _searchNewsArticles[index]
-                                                      .url,
-                                            )),
+                                      builder: (context) => NewsView(
+                                        newsAuthor:
+                                            _searchNewsArticles[index].author,
+                                        newsContent:
+                                            _searchNewsArticles[index].content,
+                                        newsDate: _searchNewsArticles[index]
+                                            .publishedAt,
+                                        newsDescription:
+                                            _searchNewsArticles[index]
+                                                .description,
+                                        newsHeading:
+                                            _searchNewsArticles[index].title,
+                                        newsImageUrl: _searchNewsArticles[index]
+                                            .urlToImage,
+                                        newsUrl: _searchNewsArticles[index].url,
+                                      ),
+                                    ),
                                   );
                                 },
                               );

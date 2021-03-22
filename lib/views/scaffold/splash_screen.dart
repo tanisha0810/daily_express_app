@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _loadWidget() async {
-    var _duration = Duration(seconds: 4);
+    var _duration = Duration(seconds: 5);
     return Timer(_duration, navigationPage);
   }
 

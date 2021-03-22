@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:intl/intl.dart';
 import 'package:news_app/views/scaffold/news_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NewsCard extends StatelessWidget {
   final String newsAuthor;
@@ -50,7 +49,6 @@ class NewsCard extends StatelessWidget {
                           newsHeading,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.justify,
                         ),
                         SizedBox(height: 4),
                         Text(
@@ -109,9 +107,5 @@ class NewsCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void launchUrl(String url) async {
-    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
   }
 }

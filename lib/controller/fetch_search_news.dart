@@ -4,20 +4,27 @@ import 'package:news_app/api_key.dart';
 import 'package:news_app/model/news_model.dart';
 
 class SearchNews {
+  //List to store response fetched from API
   List<NewsArticle> searchNewsArticleList = [];
 
+  //url to fetch news
   Future<bool> getSearchNews(String query, int page) async {
     String newsFetchUrl =
         'https://newsapi.org/v2/everything?qInTitle=$query&page=$page&apiKey=$apiKey';
 
+    //bool to check if there is more news to fetch which helps in pagination
     bool moreSearchNews;
 
+    //response
     var response = await http.get(newsFetchUrl);
-
     var jsonResponse = jsonDecode(response.body);
 
     if (jsonResponse['status'] == 'ok') {
+      //checking if we have fetched all responses
+
       if (searchNewsArticleList.length != jsonResponse['totalResults']) {
+        //storing each element fetched
+
         jsonResponse['articles'].forEach((articleElement) {
           if (articleElement['urlToImage'] != null &&
               articleElement['description'] != null &&
@@ -34,12 +41,10 @@ class SearchNews {
           }
         });
         moreSearchNews = true;
-        print(searchNewsArticleList.length);
       } else {
         moreSearchNews = true;
-        print(searchNewsArticleList.length);
       }
-    } else {
+    } else if (jsonResponse['status'] == 'error') {
       throw Exception('Error');
     }
     return moreSearchNews;
