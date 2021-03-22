@@ -21,6 +21,8 @@ class NewsSource {
               id: sourceElement['id'], sourceName: sourceElement['name']));
         }
       });
+    } else {
+      throw Exception('Error');
     }
     return newsSource;
   }

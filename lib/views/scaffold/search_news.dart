@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:news_app/controller/fetch_search_news.dart';
 import 'package:news_app/model/news_model.dart';
+import 'package:news_app/views/scaffold/news_view.dart';
 
 class SearchNewsView extends StatefulWidget {
   @override
@@ -137,16 +138,46 @@ class _SearchNewsViewState extends State<SearchNewsView> {
                                     );
                             } else {
                               return ListTile(
-                                title: Text(_searchNewsArticles[index].title,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                title: Text(
+                                  _searchNewsArticles[index].title,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 subtitle: Text(
-                                    DateFormat('MMMM d, yyyy').format(
-                                        DateTime.parse(
-                                            _searchNewsArticles[index]
-                                                .publishedAt)),
-                                    style: TextStyle(
-                                        fontSize: 12, color: Colors.black54)),
+                                  DateFormat('MMMM d, yyyy').format(
+                                      DateTime.parse(_searchNewsArticles[index]
+                                          .publishedAt)),
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.black54),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NewsView(
+                                              newsAuthor:
+                                                  _searchNewsArticles[index]
+                                                      .author,
+                                              newsContent:
+                                                  _searchNewsArticles[index]
+                                                      .content,
+                                              newsDate:
+                                                  _searchNewsArticles[index]
+                                                      .publishedAt,
+                                              newsDescription:
+                                                  _searchNewsArticles[index]
+                                                      .description,
+                                              newsHeading:
+                                                  _searchNewsArticles[index]
+                                                      .title,
+                                              newsImageUrl:
+                                                  _searchNewsArticles[index]
+                                                      .urlToImage,
+                                              newsUrl:
+                                                  _searchNewsArticles[index]
+                                                      .url,
+                                            )),
+                                  );
+                                },
                               );
                             }
                           },

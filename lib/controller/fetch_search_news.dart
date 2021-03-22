@@ -23,13 +23,13 @@ class SearchNews {
               articleElement['description'] != null &&
               articleElement['url'] != null) {
             NewsArticle newsArticle = NewsArticle(
-              author: articleElement['author'],
-              description: articleElement['description'],
-              publishedAt: articleElement['publishedAt'],
-              title: articleElement['title'],
-              url: articleElement['url'],
-              urlToImage: articleElement['urlToImage'],
-            );
+                author: articleElement['author'],
+                description: articleElement['description'],
+                publishedAt: articleElement['publishedAt'],
+                title: articleElement['title'],
+                url: articleElement['url'],
+                urlToImage: articleElement['urlToImage'],
+                content: articleElement['content']);
             searchNewsArticleList.add(newsArticle);
           }
         });
@@ -39,6 +39,8 @@ class SearchNews {
         moreSearchNews = true;
         print(searchNewsArticleList.length);
       }
+    } else {
+      throw Exception('Error');
     }
     return moreSearchNews;
   }

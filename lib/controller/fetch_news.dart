@@ -22,13 +22,13 @@ class News {
               articleElement['description'] != null &&
               articleElement['url'] != null) {
             NewsArticle newsArticle = NewsArticle(
-              author: articleElement['author'],
-              description: articleElement['description'],
-              publishedAt: articleElement['publishedAt'],
-              title: articleElement['title'],
-              url: articleElement['url'],
-              urlToImage: articleElement['urlToImage'],
-            );
+                author: articleElement['author'],
+                description: articleElement['description'],
+                publishedAt: articleElement['publishedAt'],
+                title: articleElement['title'],
+                url: articleElement['url'],
+                urlToImage: articleElement['urlToImage'],
+                content: articleElement['content']);
             newsArticleList.add(newsArticle);
           }
         });
@@ -38,6 +38,8 @@ class News {
         print(newsArticleList.length);
         moreNews = false;
       }
+    } else {
+      throw Exception('Error');
     }
     return moreNews;
   }

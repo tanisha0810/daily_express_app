@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/controller/fetch_news.dart';
-import 'package:news_app/controller/fetch_sort_news.dart';
 import 'package:news_app/controller/fetch_source_news.dart';
 import 'package:news_app/controller/fetch_sources.dart';
 import 'package:news_app/model/news_model.dart';
@@ -19,7 +18,6 @@ class _NewsScreenState extends State<NewsScreen> {
   int page = 1;
 
   News newsArticles = News();
-  SortNews sortNewsArticles = SortNews();
   NewsSource newsSource = NewsSource();
   FilterNews filterNews = FilterNews();
 
@@ -62,14 +60,6 @@ class _NewsScreenState extends State<NewsScreen> {
     });
   }
 
-  getSortNews() async {
-    _moreNews = await sortNewsArticles.getSortNews(page);
-    _newsArticles = sortNewsArticles.sortNewsArticleList;
-    setState(() {
-      _loading = false;
-    });
-  }
-
   @override
   void dispose() {
     _scrollController.dispose();
@@ -97,9 +87,17 @@ class _NewsScreenState extends State<NewsScreen> {
               icon: Icon(Icons.filter_list),
               onPressed: () {
                 showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(16),
+                          topLeft: Radius.circular(16))),
                   context: context,
                   builder: (context) {
                     return Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(16),
+                              topLeft: Radius.circular(16))),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
@@ -110,7 +108,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                 padding:
                                     const EdgeInsets.fromLTRB(16, 8, 16, 0),
                                 child: Text(
-                                  'Filter by Source',
+                                  'Filter by News Source',
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.black54),
                                 ),
@@ -206,6 +204,12 @@ class _NewsScreenState extends State<NewsScreen> {
                           : '',
                       newsUrl: _newsArticles[index].url != null
                           ? _newsArticles[index].url
+                          : '',
+                      newsContent: _newsArticles[index].content != null
+                          ? _newsArticles[index].content
+                          : '',
+                      newsAuthor: _newsArticles[index].author != null
+                          ? _newsArticles[index].author
                           : '',
                     );
                   }

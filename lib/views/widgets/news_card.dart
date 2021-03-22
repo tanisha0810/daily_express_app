@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:intl/intl.dart';
+import 'package:news_app/views/scaffold/news_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NewsCard extends StatelessWidget {
+  final String newsAuthor;
   final String newsHeading;
   final String newsImageUrl;
   final String newsDescription;
   final String newsDate;
   final String newsUrl;
+  final String newsContent;
 
   NewsCard(
-      {this.newsHeading,
+      {this.newsAuthor,
+      this.newsHeading,
       this.newsImageUrl,
       this.newsDescription,
       this.newsDate,
-      this.newsUrl});
+      this.newsUrl,
+      this.newsContent});
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +54,10 @@ class NewsCard extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                            DateFormat('MMMM d, yyyy')
-                                .format(DateTime.parse(newsDate)),
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.black54)),
+                          DateFormat('MMMM d, yyyy')
+                              .format(DateTime.parse(newsDate)),
+                          style: TextStyle(fontSize: 12, color: Colors.black54),
+                        ),
                       ],
                     ),
                   ),
@@ -72,7 +77,20 @@ class NewsCard extends StatelessWidget {
                     SizedBox(height: 8),
                     RaisedButton(
                       onPressed: () {
-                        launchUrl(newsUrl);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewsView(
+                              newsHeading: newsHeading,
+                              newsContent: newsContent,
+                              newsDate: newsDate,
+                              newsUrl: newsUrl,
+                              newsDescription: newsDescription,
+                              newsImageUrl: newsImageUrl,
+                              newsAuthor: newsAuthor,
+                            ),
+                          ),
+                        );
                       },
                       child: Text('READ MORE',
                           style: TextStyle(
